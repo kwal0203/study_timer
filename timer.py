@@ -1,7 +1,12 @@
+#Todo:
+#1. Add todo list
+#2. Manually enter minutes
+#3. Daily minute countdown
+
 import os
 import time
 import sys
-import MySQLdb
+import sqlite3
 from math import floor
 
 def timer():
@@ -15,7 +20,7 @@ def timer():
        return time.time() - start 
 
 def rest():
-    time.sleep(3)
+    time.sleep(1)
 
 def main_menu():
     print "Please enter a command:\n"
@@ -26,7 +31,7 @@ def main_menu():
     print "\n> ",
 
 def read_database():
-    db = MySQLdb.connect("localhost", "admin", "admin", "study_timer") 
+    db = sqlite3.connect('User.db') 
     cursor = db.cursor()
     sql = "SELECT * FROM users"
     try:
@@ -37,9 +42,11 @@ def read_database():
         subj2 = results[3]
         subj3 = results[4]
         subj4 = results[5]
+        subj5 = results[6]
+        subj6 = results[7]
         print "\nName: %s" % name
-        print "COMP9444: %d COMP3222 %d COMP2041 %d MATH3411 %d" \
-            % (subj1, subj2, subj3, subj4)
+        print "COMP9444: %d COMP3222 %d COMP2041 %d MATH3411 %d Project %d Break %d" \
+            % (subj1, subj2, subj3, subj4, subj5, subj6)
         print "\nPress any key to continue",
         finish = raw_input()
     except:
@@ -48,13 +55,10 @@ def read_database():
 
 def add_time(sql):
     sql = sql
-    db = MySQLdb.connect("localhost", "admin", "admin", "study_timer") 
+    db = sqlite3.connect('User.db') 
     cursor = db.cursor()
-    try:
-        cursor.execute(sql)
-        db.commit()
-    except:
-        db.rollback()
+    cursor.execute(sql)
+    db.commit()
     db.close()
 
 def subject_menu():
@@ -63,6 +67,8 @@ def subject_menu():
     print "2.) COMP3222"
     print "3.) COMP2041"
     print "4.) MATH3411"
+    print "5.) Project"
+    print "6.) Break"
 
 def clock():
     while True:
@@ -101,6 +107,7 @@ def clock():
                 rest()
             else:
                 print "\nYou had a break for %d seconds\n" % time
+                add_time(var)
                 rest()
         elif command == '2':
             os.system('clear')
