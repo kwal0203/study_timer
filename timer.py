@@ -1,7 +1,6 @@
 #Todo:
 #1. Add todo list
-#2. Manually enter minutes
-#3. Daily minute countdown
+#2. Manually enter minutes DONE
 #3. Daily minute countdown
 
 import os
@@ -46,16 +45,42 @@ def read_database():
         subj5 = results[6]
         subj6 = results[7]
         print "\nName: %s" % name
-        print "COMP9444: %d COMP3222 %d COMP2041 %d MATH3411 %d Project %d Break %d" \
-            % (subj1, subj2, subj3, subj4, subj5, subj6)
+        print "COMP9444: %d" % subj1
+        print "COMP3222: %d" % subj2
+        print "COMP2041: %d" % subj3
+        print "MATH3411: %d" % subj4
+        print "Project:  %d" % subj5
+        print "Break:    %d" % subj6
         print "\nPress any key to continue",
         finish = raw_input()
     except:
         print "No data mate"
     db.close()
 
-def add_time(sql):
-    sql = sql
+def add_time(subject, time):
+    
+    #convert raw seconds to hours:minutes:seconds
+    hours = time / 3600
+    remainder = time % 3600
+    minutes = remainder / 60 
+    seconds = remainder % 60
+    
+    #output for user
+    print "\nAdding %d hours" % hours,
+    print "%d minutes" % minutes,
+    print "%d seconds" % seconds,
+    print "to " + subject 
+    rest()
+    
+    #sql command to add in raw seconds to database
+    sql = 'UPDATE users SET ' + subject + '=' + subject + ' + ' + \
+        str(time) + ' WHERE ID = 1'
+    
+    #debug
+    #print "SQL: %s" % sql
+    #deb = raw_input()
+    
+    #carry out database operation
     db = sqlite3.connect('User.db') 
     cursor = db.cursor()
     cursor.execute(sql)
@@ -78,73 +103,59 @@ def clock():
         command = raw_input()
 
         if command == '1':
+            #raw time in seconds
             time = timer()
+            time = int(time)
+
+            #select subject to add time to
             subject_menu()
             subject = raw_input();
+            
             if subject == '1':
-                print "\nAdding %d seconds to COMP9444\n" % time
-                var = 'UPDATE users SET COMP9444 = COMP9444 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("COMP9444", time)
                 rest()
             elif subject == '2':
-                print "\nAdding %d seconds to COMP3222\n" % time
-                var = 'UPDATE users SET COMP3222 = COMP3222 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("COMP3222", time)
                 rest()
             elif subject == '3':
-                print "\nAdding %d seconds to COMP2041\n" % time
-                var = 'UPDATE users SET COMP2041 = COMP2041 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("COMP2041", time)
                 rest()
             elif subject == '4':
-                print "\nAdding %d seconds to MATH3411\n" % time
-                var = 'UPDATE users SET MATH3411 = MATH3411 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("MATH3411", time)
                 rest()
             elif subject == '5':
-                print "\nAdding %d seconds to project\n" % time
-                var = 'UPDATE users SET PROJECT = PROJECT + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("PROJECT", time)
                 rest()
-            else:
-                print "\nYou had a break for %d seconds\n" % time
-                add_time(var)
+            elif subject == '6':
+                add_time("BREAK", time)
                 rest()
         elif command == '2':
             os.system('clear')
-            print "How much time would you like to add? ",
-            time = int(raw_input())
+
+            print "How much time would you like to add (minutes)? ",
+            time = int(raw_input()) * 60
+ 
+            #select subject from menu
             subject_menu()
             subject = raw_input()
+ 
             if subject == '1':
-                print "\nAdding %d seconds to COMP9444\n" % time
-                var = 'UPDATE users SET COMP9444 = COMP9444 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("COMP9444", time)
                 rest()
             elif subject == '2':
-                print "\nAdding %d seconds to COMP3222\n" % time
-                var = 'UPDATE users SET COMP3222 = COMP3222 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("COMP3222", time)
                 rest()
             elif subject == '3':
-                print "\nAdding %d seconds to COMP2041\n" % time
-                var = 'UPDATE users SET COMP2041 = COMP2041 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("COMP2041", time)
                 rest()
             elif subject == '4':
-                print "\nAdding %d seconds to MATH3411\n" % time
-                var = 'UPDATE users SET MATH3411 = MATH3411 + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("MATH3411", time)
                 rest()
             elif subject == '5':
-                print "\nAdding %d seconds to project\n" % time
-                var = 'UPDATE users SET PROJECT = PROJECT + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+                add_time("PROJECT", time)
                 rest()
-            else:
-                print "\nAdding %d seconds to break\n" % time
-                var = 'UPDATE users SET BREAK = BREAK + ' + str(time) + ' WHERE ID = 1'
-                add_time(var)
+            elif subject == '6':
+                add_time("BREAK", time)
                 rest()
         elif command == '3':
             read_database()
