@@ -28,8 +28,18 @@ def main_menu():
     print "1.) Start timer"
     print "2.) Add time manually"
     print "3.) Run statistics"
-    print "4.) Exit"
+    print "4.) See spaced repetition schedule"
+    print "5.) Exit"
     print "\n> ",
+
+def srs():
+    print "1. Learn in lecture/private study"
+    print "2. Recall one hour later"
+    print "3. Recall one day later"
+    print "4. Recall week later"
+    print "5. Recall one month later"
+    print "6. Recall one month later"
+    print "7. Recall one month later"
 
 def read_database():
     db = sqlite3.connect('User.db') 
