@@ -2,6 +2,7 @@
 #1. Add todo list
 #2. Manually enter minutes DONE
 #3. Daily minute countdown
+#4. Add in SQR3 memory function
 
 import os
 import time
