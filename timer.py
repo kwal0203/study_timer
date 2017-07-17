@@ -2,6 +2,7 @@
 #1. Add todo list
 #2. Manually enter minutes
 #3. Daily minute countdown
+#3. Daily minute countdown
 
 import os
 import time
