@@ -1,8 +1,9 @@
 #Todo:
 #1. Add todo list
-#2. Manually enter minutes DONE
-#3. Daily minute countdown DONE
+#2. Manually enter minutes      DONE
+#3. Daily minute countdown      DONE
 #4. Add in SQR3 memory function
+#5. Seperate break timer        DONE
 
 import os
 import time
@@ -50,6 +51,20 @@ def timer(subject):
 
 def rest():
     time.sleep(1)
+        
+def rest_timer():
+    start = time.time()
+    try:
+        while True:
+            os.system('clear')
+            #current break length
+            elapsed = int(time.time() - start)
+            print elapsed, "seconds elapsed\n"
+            if elapsed > 300:
+                print "Back to work\n"
+            time.sleep(1)
+    except KeyboardInterrupt:
+        return
 
 def main_menu():
     print "Please enter a command:\n"
@@ -79,15 +94,13 @@ def read_database():
         results = cursor.fetchone()
         print "\nName: %s"    % results[1]
         print "COMP9444:  %d" % results[2]
-        print "COMP3222:  %d" % results[3]
-        print "COMP2041:  %d" % results[4]
-        print "MATH3411:  %d" % results[5]
-        print "Project:   %d" % results[6]
-        print "Break:     %d" % results[7]
-        print "COMP9444T: %d" % results[8]
-        print "COMP3222T: %d" % results[9]
-        print "COMP2041T: %d" % results[10]
-        print "MATH3411T: %d" % results[11]
+        print "COMP2041:  %d" % results[3]
+        print "MATH3411:  %d" % results[4]
+        print "Project:   %d" % results[5]
+        print "COMP9444T: %d" % results[6]
+        print "COMP2041T: %d" % results[7]
+        print "MATH3411T: %d" % results[8]
+        print "Project:   %d" % results[9]
         print "\nPress any key to continue",
         finish = raw_input()
     except:
@@ -126,7 +139,7 @@ def reset():
     cursor = db.cursor()
     cursor.execute(sql)
     db.commit()
-    sql = "UPDATE users SET COMP3222_TIME = 7200"
+    sql = "UPDATE users SET PROJECT_TIME = 7200"
     cursor = db.cursor()
     cursor.execute(sql)
     db.commit()
@@ -157,10 +170,6 @@ def clock():
         command = raw_input()
 
         if command == '1':
-            #raw time in seconds
-            #time = timer()
-            #time = int(time)
-
             #select subject to add time to
             subject_menu()
             subject = raw_input();
@@ -191,9 +200,8 @@ def clock():
                 add_time("PROJECT", time)
                 rest()
             elif subject == '6':
-                time = timer("BREAK_TIME")
-                time = int(time)
-                add_time("BREAK", time)
+                rest_timer()
+                print "\nReturning to main menu\n"
                 rest()
         elif command == '2':
             os.system('clear')
