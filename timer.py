@@ -1,9 +1,10 @@
 #Todo:
 #1. Add todo list
-#2. Manually enter minutes      DONE
-#3. Daily minute countdown      DONE
+#2. Manually enter minutes              DONE
+#3. Daily minute countdown              DONE
 #4. Add in SQR3 memory function
-#5. Seperate break timer        DONE
+#5. Seperate break timer                DONE
+#6. Add function to add/remove subjects
 
 import os
 import time
@@ -81,6 +82,11 @@ def srs():
     webbrowser.open('http://www.studygs.net/texred2.htm', new=2)
     time.sleep(2)
     os.system('clear')
+    print "* two hours per day per subject"
+    print "* on algorithm days, two hours CLRS and two hours problems"
+    print "  minimum"
+    print "* one day off / work on project"
+    raw_input("Press any key to continue")
 
 def read_database():
     db = sqlite3.connect('User.db') 
