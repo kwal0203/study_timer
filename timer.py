@@ -9,6 +9,7 @@ import os
 import time
 import sys
 import sqlite3
+import webbrowser
 from math import floor
 
 def timer(subject):
@@ -77,13 +78,9 @@ def main_menu():
     print "\n> ",
 
 def srs():
-    print "1. Learn in lecture/private study"
-    print "2. Recall one hour later"
-    print "3. Recall one day later"
-    print "4. Recall week later"
-    print "5. Recall one month later"
-    print "6. Recall one month later"
-    print "7. Recall one month later"
+    webbrowser.open('http://www.studygs.net/texred2.htm', new=2)
+    time.sleep(2)
+    os.system('clear')
 
 def read_database():
     db = sqlite3.connect('User.db') 
@@ -96,11 +93,15 @@ def read_database():
         print "COMP9444:  %d" % results[2]
         print "COMP2041:  %d" % results[3]
         print "MATH3411:  %d" % results[4]
-        print "Project:   %d" % results[5]
-        print "COMP9444T: %d" % results[6]
-        print "COMP2041T: %d" % results[7]
-        print "MATH3411T: %d" % results[8]
-        print "Project:   %d" % results[9]
+        print "COMP3222:  %d" % results[5]
+        print "Algos:     %d" % results[6]
+        print "Project:   %d" % results[7]
+        print "COMP9444T: %d" % results[8]
+        print "COMP2041T: %d" % results[9]
+        print "MATH3411T: %d" % results[10]
+        print "COMP3222T: %d" % results[11]
+        print "AlgosT:    %d" % results[12]
+        print "ProjectT:  %d" % results[13]
         print "\nPress any key to continue",
         finish = raw_input()
     except:
@@ -151,17 +152,24 @@ def reset():
     cursor = db.cursor()
     cursor.execute(sql)
     db.commit()
+    sql = "UPDATE users SET COMP3222_TIME = 7200"
+    cursor = db.cursor()
+    cursor.execute(sql)
+    db.commit()
+    sql = "UPDATE users SET ALGORITHM_TIME = 7200"
+    cursor = db.cursor()
+    cursor.execute(sql)
+    db.commit()
     db.close()
-    
 
 def subject_menu():
     print "\nWhich subject?"
     print "1.) COMP9444"
-    print "2.) COMP3222"
-    print "3.) COMP2041"
-    print "4.) MATH3411"
-    print "5.) Project"
-    print "6.) Break"
+    print "2.) COMP2041"
+    print "3.) MATH3411"
+    print "4.) COMP3222"
+    print "5.) Algorithms"
+    print "6.) Project"
 
 def clock():
     while True:
@@ -180,26 +188,31 @@ def clock():
                 add_time("COMP9444", time)
                 rest()
             elif subject == '2':
-                time = timer("COMP3222_TIME")
-                time = int(time)
-                add_time("COMP3222", time)
-                rest()
-            elif subject == '3':
                 time = timer("COMP2041_TIME")
                 time = int(time)
                 add_time("COMP2041", time)
                 rest()
-            elif subject == '4':
+            elif subject == '3':
                 time = timer("MATH3411_TIME")
                 time = int(time)
                 add_time("MATH3411", time)
                 rest()
+            elif subject == '4':
+                time = timer("COMP3222_TIME")
+                time = int(time)
+                add_time("COMP3222", time)
+                rest()
             elif subject == '5':
+                time = timer("ALGORITHM_TIME")
+                time = int(time)
+                add_time("ALGORITHM", time)
+                rest()
+            elif subject == '6':
                 time = timer("PROJECT_TIME")
                 time = int(time)
                 add_time("PROJECT", time)
                 rest()
-            elif subject == '6':
+            elif subject == '7':
                 rest_timer()
                 print "\nReturning to main menu\n"
                 rest()
@@ -217,25 +230,24 @@ def clock():
                 add_time("COMP9444", time)
                 rest()
             elif subject == '2':
-                add_time("COMP3222", time)
-                rest()
-            elif subject == '3':
                 add_time("COMP2041", time)
                 rest()
-            elif subject == '4':
+            elif subject == '3':
                 add_time("MATH3411", time)
                 rest()
+            elif subject == '4':
+                add_time("COMP3222", time)
+                rest()
             elif subject == '5':
-                add_time("PROJECT", time)
+                add_time("ALGORITHM", time)
                 rest()
             elif subject == '6':
-                add_time("BREAK", time)
+                add_time("PROJECT", time)
                 rest()
         elif command == '3':
             read_database()
         elif command == '4':
             srs()
-            raw_input("Press any key to continue")
         elif command == '5':
             reset()
         elif command == '6':
